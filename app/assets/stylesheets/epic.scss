@@ -1,0 +1,35 @@
+.epic {
+  &--label {
+    background: #ff66f2;
+    width: 170px;
+    display: inline-block;
+    padding: 10px;
+    margin-top: 10px;
+    -webkit-transform: rotate(random(3) + deg);
+    -moz-transform: rotate(random(3) + deg);
+    -o-transform: rotate(random(3) + deg);
+    -ms-transform: rotate(random(3) + deg);
+    transform: rotate(random(3) + deg);
+
+    &.new {
+      max-width: 220px;
+      display: inline-block;
+      padding: 10px;
+      margin-top: 20px;
+      -webkit-transform: rotate(random(3) + deg);
+      -moz-transform: rotate(random(3) + deg);
+      -o-transform: rotate(random(3) + deg);
+      -ms-transform: rotate(random(3) + deg);
+      transform: rotate(random(3) + deg);
+    }
+
+    &--name {
+      margin-top: 0px;
+      color: #000000;
+    }
+
+    &.new {
+      opacity: 0.7;
+    }
+  }
+}

@@ -1,0 +1,60 @@
+<div class="register">
+  <div class="page--form">
+    <h1>Create an account</h1>
+
+    <%= form_for @user do |f| %>
+      <%= render 'shared/error_messages' %>
+      <div class="page--form--row">
+        <div>
+          <%= f.label :name, class: 'page--form--label' %>
+        </div>
+
+        <div>
+          <%=f.text_field :name, class: 'page--form--input form-control' %>
+        </div>
+      </div>
+
+      <div class="page--form--row">
+        <div>
+          <%= f.label :email, class: 'page--form--label' %>
+        </div>
+
+        <div>
+          <%= f.email_field :email, class: 'page--form--input form-control' %>
+        </div>
+      </div>
+
+      <div class="page--form--row">
+        <div>
+          <%= f.label :password, class: 'page--form--label' %>
+        </div>
+
+        <div>
+          <%= f.password_field :password, class: 'page--form--input form-control' %>
+        </div>
+      </div>
+
+      <div class="page--form--row">
+        <div>
+          <%= f.label :password_confirmation, class: 'page--form--label' %>
+        </div>
+
+        <div>
+          <%= f.password_field :password_confirmation, class: 'page--form--input form-control' %>
+        </div>
+
+        <div>
+          <small>Password must be at least 10 characters long</small>
+        </div>
+      </div>
+
+      <div class="page--form--submit-wrapper">
+        <%= f.submit 'Register', class: 'page--form--submit' %>
+      </div>
+
+      <div class="page--form--row">
+        <p>Already have an account? <%= link_to 'Sign in to get started', login_path %></p>
+      </div>
+    <% end %>
+  </div>
+</div>

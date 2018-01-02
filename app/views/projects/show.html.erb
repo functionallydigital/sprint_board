@@ -1,0 +1,121 @@
+<div class="project--details">
+  <div class="meta">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="meta--label">
+          <h1 class="meta--label--name"><%= @project.name %></h1>
+
+          <p><%= @project.description %></p>
+          
+          <%= link_to edit_project_path(@project.id) do %>
+            <%= image_tag('edit-icon.png', class: 'edit-icon') %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="col-sm-5">
+        <div class="meta--label">
+          <% if @project.has_active_sprint? %>
+            <%= link_to project_sprint_path(project_id: @project.id, id: @project.current_sprint.id) do %>
+              <div>
+                <h2 class="meta--label--name">Current Sprint</h2>
+
+                <p>
+                  <%= @project.current_sprint.start_date %> - 
+                
+                  <%= @project.current_sprint.end_date %>
+                </p>
+
+                <p>
+                  <%= @project.current_sprint.completion %>
+                </p>
+              </div>
+            <% end %>
+          <% else %>
+            <p>
+              There is currently no active sprint on this project
+            </p>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="meta--label">
+          <p>Start Date: <%= @project.start_date %></p>
+          
+          <p>End Date: <%= @project.end_date %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="epic-list col-sm-8">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="heading-label">
+            <h2 class="heading-label--name">
+              Project Epics
+            </h2>
+          </div>
+        </div>
+      </div>
+
+      <% @project.epics.each do |epic| %>
+        <%= link_to project_epic_path(project_id: @project.id, id: epic.id) do %>
+          <div class="epic--label">
+            <h3 class="epic--label--name">
+              <%= epic.name %>
+            </h3>
+
+            <p>
+              <%= epic.priority %>
+            </p>
+
+            <p>
+              <%= pluralize(epic.stories.count, 'story') %>
+            </p>
+          </div>
+        <% end %>
+      <% end %>
+
+      <div class="epic--label new">
+        <%= link_to new_project_epic_path(project_id: @project.id) do %>
+          <h3 class="epic--label--name">
+            + Add new epic
+          </h3>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="team-list col-sm-4">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="heading-label">
+            <h2 class="heading-label--name">
+              Project Team
+            </h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="post-it__user">
+          <%= form_for :user, url: add_user_path(@project.id) do |f| %>
+            <%= f.label :user_name %>
+            <%= f.text_field :user_name %>
+
+            <%= f.submit 'Add User To Project' %>
+          <% end %>
+        </div>
+
+
+        <% @project.users.each do |user| %>
+          <div class="post-it__user">
+            <%= user.name %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

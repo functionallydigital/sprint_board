@@ -1,0 +1,69 @@
+<div class="row">
+  <%= form_for @project do |f| %>
+    <div class="col-sm-6">
+      <div class="page--form">
+        <div class="row page--form--row">
+          <div class="col-sm-3 col-xs-6">
+            <%= f.label :name, class: 'page--form--label' %>
+          </div>
+          <div class="col-sm-9 col-xs-6">
+            <%= f.text_field :name, class: 'page--form--input' %>
+          </div>
+        </div>
+        
+        <div class="row page--form--row">
+          <div class="col-sm-3 col-xs-6">
+            <%= f.label :description, class: 'page--form--label' %>
+          </div>
+          <div class="col-sm-9 col-xs-6">
+            <%= f.text_area :description, class: 'page--form--input' %>
+          </div>
+        </div>
+
+        <div class="row page--form--row">
+          <div class="col-sm-3 col-xs-6">
+            <%= f.label :start_date, class: 'page--form--label' %>
+          </div>
+          <div class="col-sm-9 col-xs-6">
+            <%= f.date_select :start_date, class: 'page--form--input' %>
+          </div>
+        </div>
+
+        <div class="row page--form--row">
+          <div class="col-sm-3 col-xs-6">
+            <%= f.label :end_date, class: 'page--form--label' %>
+          </div>
+          <div class="col-sm-9 col-xs-6">
+            <%= f.date_select :end_date, class: 'page--form--input' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="page--form">
+        <h2>
+          Project Sprint Settings
+        </h2>
+        <div class="row page--form--row">
+          <div class="col-sm-3 col-xs-6">
+            <%= f.label :sprint_length, class: 'page--form--label' %>
+          </div>
+          <div class="col-sm-9 col-xs-6">
+            <%= f.number_field :sprint_length, class: 'page--form--input' %>
+          </div>
+        </div>
+
+        <% @project.status.each do |status| %>
+          <%= status.name %>
+        <% end %>
+
+        <div class="row page--form--submit-wrapper">
+          <div class="col-xs-12">
+            <%= f.submit @button_text, class: 'page--form--submit' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

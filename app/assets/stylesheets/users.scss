@@ -1,0 +1,31 @@
+.register {
+  margin-top: 100px;
+}
+
+.user {
+  &--overview {
+    padding: 30px 180px;
+
+    &--greeting {
+      margin-bottom: 100px;
+    }
+
+    .heading-label {
+      color: #000000;
+      margin-top: 10px;
+      margin-right: 10px;
+      background: #fcfcfc;
+      display: inline-block;
+      padding: 20px;
+      -webkit-transform: rotate(random(3) + deg);
+      -moz-transform: rotate(random(3) + deg);
+      -o-transform: rotate(random(3) + deg);
+      -ms-transform: rotate(random(3) + deg);
+      transform: rotate(random(3) + deg);
+
+      &--name {
+        margin-top: 0px
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+<div class="ticket-entry">
+  <div class="ticket-entry--form epic">
+    <div class="row">
+      <div class="col-xs-12">
+        <%= f.label :name, class: 'ticket-entry--form--label' %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <%= f.text_field :name, class: 'ticket-entry--form--input' %>
+      </div>
+    </div>
+
+    <div class="row ticket-entry--form--submit-wrapper">
+      <div class="col-xs-12">
+        <%= f.submit @buttonText, class: 'ticket-entry--form--submit epic' %>
+      </div>
+    </div>
+  </div>
+</div>

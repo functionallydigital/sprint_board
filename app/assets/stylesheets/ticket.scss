@@ -1,0 +1,57 @@
+.ticket-entry, .ticket-header {
+  float: left;
+
+  &--form {
+    margin-left: 300px;
+    margin-top: 300px;
+    width: 400px;
+    height: 400px;
+    padding: 50px;
+    -webkit-transform: rotate(random(3) + deg);
+    -moz-transform: rotate(random(3) + deg);
+    -o-transform: rotate(random(3) + deg);
+    -ms-transform: rotate(random(3) + deg);
+    transform: rotate(random(3) + deg);
+
+    &.epic {
+      background-color: #ff66f2;
+    }
+    
+    &.story {
+      background-color: #dbf709;
+    }
+
+    &--label, &--input, &--submit {
+      font-size: 26px;
+    }
+
+    &--submit {
+      border: none;
+      text-decoration: underline;
+
+      &.epic {
+        background-color: #ff66f2;
+      }
+      
+      &.story {
+        background-color: #dbf709;
+      }
+    }
+
+    &--submit-wrapper {
+      position: absolute;
+      bottom: 50px;
+      right: 50px;
+    }
+  }
+}
+
+.ticket-header {
+  &--form {
+    background: #fcfcfc;
+
+    &--submit {
+      background: #fcfcfc;
+    }
+  }
+}

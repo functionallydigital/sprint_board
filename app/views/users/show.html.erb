@@ -1,0 +1,33 @@
+<div class="user--overview">
+  <div class="user--overview--greeting">
+    <div class="heading-label">
+      <h1 class="heading-label--name">
+        Hi <%= @user.name %>
+      </h1>
+
+      <p>What do you want to do?</p>
+    </div>
+  </div>
+
+  <div class="action-list">
+    <%= link_to edit_user_path(@user.id) do %>
+      <div class="heading-label">
+        <h2 class="heading-label--name">
+          Edit account details
+        </h2>
+      </div>
+    <% end %>
+
+    <div class="heading-label">
+      <h2 class="heading-label--name">
+        Change password
+      </h2>
+    </div>
+
+    <div class="heading-label">
+      <h2 class="heading-label--name">
+        Delete account
+      </h2>
+    </div>
+  </div>
+</div>

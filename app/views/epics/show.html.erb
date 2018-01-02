@@ -1,0 +1,55 @@
+<div class="project--details">
+  <div class="meta">
+    <div class="row">
+      <div class="col-xs-12">
+        <%= link_to project_path(@project.id) do %>
+          <div class="meta--label">
+            <h1 class="meta--label--name"><%= @project.name %></h1>
+
+            <p><%= @project.description %></p>
+          </div>
+        <% end %>
+
+        <div class="epic--label">
+          <h2 class="epic--label--name">
+            <%= @epic.name %>
+          </h2>
+
+          <%= link_to edit_project_epic_path(project_id: @project.id, id: @epic.id) do %>
+            <%= image_tag('edit-icon.png', class: 'edit-icon') %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-list">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="heading-label">
+          <h3 class="heading-label--name">
+            User Stories
+          </h3>
+        </div>
+      </div>
+    </div>
+
+    <% @epic.stories.each do |story| %>
+      <%= link_to project_epic_story_path(project_id: @project.id, epic_id: @epic.id, id: story.id) do %>
+        <div class="story--label">
+          <h3 class="story--label--name">
+            <%= story.title %>
+          </h3>
+        </div>
+      <% end %>
+    <% end %>
+
+    <div class="story--label new">
+      <%= link_to new_project_epic_story_path(project_id: @project.id, epic_id: @epic.id) do %>
+        <h3 class="story--label--name">
+          + Add new story
+        </h3>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="project--meta">
+  <div class="project--meta--label">
+    <h1 class="project--meta--label--name"><%= @project.name %></h1>
+    <p><%= @project.description %></p>
+    <%= link_to edit_project_path(@project.id) do %>
+      <%= image_tag('edit-icon.png', class: 'edit-icon') %>
+    <% end %>
+  </div>
+
+  <div class="project--heading-label">
+    <h2 class="project--heading-label--name">
+      Project Epics
+    </h2>
+  </div>
+
+  <% @project.epics.each do |epic| %>
+    <div class="epic--label">
+      <h3 class="epic--label--name">
+        <%= epic.name %>
+      </h3>
+    </div>
+  <% end %>
+
+  <div class="epic--label__new">
+    <%= link_to new_project_epic_path(project_id: @project.id) do %>
+      <h3 class="epic--label--name">
+        + Add new epic
+      </h3>
+    <% end %>
+  </div>
+</div>
+
+<% @project.status.each do |status| %>
+  <div class="project--status-column">
+    <div class="project--heading-label">
+      <h2 class="project--heading-label--name">
+        <%= status.name %>
+      </h2>
+    </div>
+  </div>
+<% end %>
+
+<div class="project--status-column">
+  <div class="project--heading-label__new">
+    <%= link_to new_project_status_path(project_id: @project.id) do %>
+      <h2 class="project--heading-label--name">
+        + Status
+      </h2>
+    <% end %>
+  </div>
+</div>

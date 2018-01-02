@@ -1,0 +1,39 @@
+<div class="sign-in">
+  <div class="page--form">
+    <h1>Sign in</h1>
+
+    <%= form_for :session, url: login_path do |f| %>
+      <div class="page--form--row">
+        <div>
+          <%= f.label :email, class: 'page--form--label' %>
+        </div>
+
+        <div>
+          <%= f.email_field :email, class: 'page--form--input form-control' %>
+        </div>
+      </div>
+
+      <div class="page--form--row">
+        <div>
+          <%= f.label :password, class: 'page--form--label' %>
+        </div>
+
+        <div>
+          <%= f.password_field :password, class: 'page--form--input form-control' %>
+        </div>
+
+        <div>
+          <small>Password are at least 10 characters long</small>
+        </div>
+      </div>
+
+      <div class="page--form--submit-wrapper">
+        <%= f.submit 'Sign in', class: 'page--form--submit' %>
+      </div>
+
+      <div class="page--form--row">
+        <p>Need an account? <%= link_to 'Register here', register_path %></p>
+      </div>
+    <% end %>
+  </div>
+</div>

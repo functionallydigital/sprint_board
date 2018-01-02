@@ -1,0 +1,24 @@
+<div class="project--meta">
+  <div class="project--meta--label">
+    <h1 class="project--meta--label--name"><%= @project.name %></h1>
+    <p><%= @project.description %></p>
+  </div>
+
+  <div class="project--heading-label">
+    <h2 class="project--heading-label--name">
+      Project Epics
+    </h2>
+  </div>
+
+  <% @project.epics.each do |epic| %>
+    <div class="epic--label">
+      <h3 class="epic--label--name">
+        <%= epic.name %>
+      </h3>
+    </div>
+  <% end %>
+</div>
+
+<%= form_for @epic, url: project_epic_path(@project.id, @epic.id) do |f| %>
+  <%= render 'form', f: f %>
+<% end %>

@@ -1,0 +1,40 @@
+<div class="project--index">
+  <div class="meta">
+    <div class="heading-label">
+      <h1 class="heading-label--name">
+        Your Projects
+      </h1>
+    </div>
+  </div>
+
+  <div class="project-list">
+    <% @projects.each do |project| %>
+      <%= link_to project_path(project.id) do %>
+        <div class="meta--label">
+          <h2 class="meta--label--name"><%= project.name %></h1>
+
+          <h3><%= project.description %></h3>
+
+          <p><strong>Current Sprint</strong></p>
+          <% if project.has_active_sprint? %>
+            <p>
+              <%= project.current_sprint.start_date %>
+            </p>
+
+            <p>
+              <%= project.current_sprint.end_date %>
+            </p>
+
+            <p>
+              <%= project.current_sprint.completion %>
+            </p>
+          <% else %>
+            <p>
+              There is currently no active sprint on this project
+            </p>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="project--meta">
+  <div class="project--meta--label">
+    <h1 class="project--meta--label--name"><%= @project.name %></h1>
+    <p><%= @project.description %></p>
+  </div>
+
+  <div class="epic--label">
+    <h2 class="epic--label--name">
+      <%= @epic.name %>
+    </h2>
+  </div>
+
+  <div class="project--heading-label">
+    <h2 class="project--heading-label--name">
+      Epic Stories
+    </h2>
+  </div>
+
+  <% @epic.stories.each do |story| %>
+    <div class="story--label">
+      <h3 class="story--label--name">
+        <%= story.title %>
+      </h3>
+    </div>
+  <% end %>
+</div>
+
+<div class="ticket-entry">
+  <div class="ticket-entry--form story">
+    <%= form_for @story, url: project_epic_stories_path(project_id: @project.id, epic_id: @epic.id) do |f| %>
+      <div class="row">
+        <div class="col-xs-12">
+          <%= f.label :title, class: 'ticket-entry--form--label' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <%= f.text_field :title, class: 'ticket-entry--form--input' %>
+        </div>
+      </div>
+
+      <div class="row ticket-entry--form--submit-wrapper">
+        <div class="col-xs-12">
+          <%= f.submit :Create, class: 'ticket-entry--form--submit story' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
