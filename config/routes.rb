@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   get '/projects/:id/users', to: 'projects#users', as: 'project_users'
   post '/projects/:id/add_user', to: 'projects#add_user', as: 'add_user'
   post '/projects/:id/add_step', to: 'projects#add_step', as: 'add_step'
+  get '/projects/:id/roadmap', to: 'projects#roadmap', as: 'roadmap'
+
+  put '/epics/:id/update_sprint_number', to: 'epics#update_sprint_number', as: 'update_epic_sprint_number'
 
   post '/stories/:id/assign_user', to: 'stories#assign_user', as: 'add_story_user'
 

@@ -54,6 +54,22 @@ class EpicsController < ApplicationController
     end
   end
 
+  def update_sprint_number
+    user_session = Session.find_by(session_key: request.headers['SessionKey'])
+    user = user_session.user
+    epic = Epic.find(params[:id])
+    if user_session.is_active? && user.is_on_project?(epic.project_id)
+      user_session.refresh
+      if epic.update(sprint_number: params['sprintNumber'])
+        render :json => {success: true}
+      else
+        render :json => {error: 'Update Failed'}
+      end
+    else
+      render :json => {error: 'Invalid Session'}
+    end
+  end
+
   private
 
     def epic_params
