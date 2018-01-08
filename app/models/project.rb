@@ -72,11 +72,12 @@ class Project < ApplicationRecord
   end
 
   def for_backlog
-    story_details = []
-    stories.sort_by{ |story| story.position}.each do |story|
-      story_details << story.for_backlog
-    end
-    { id: id, name: name, stories: story_details }
+    { id: id, name: name, stories:  stories.sort_by{ |story| story.position}.map{|story| story.for_backlog} }
+  end
+
+  def for_roadmap
+    { id: id, name: name, start_date: start_date, end_date: end_date, sprint_length: sprint_length,
+      epics: epics.where(sprint_number: nil).map{|epic| epic.for_roadmap}, sprints: roadmap_sprints, required_velocity: required_velocity }
   end
 
   def users_list
@@ -85,6 +86,39 @@ class Project < ApplicationRecord
       user_list << user.for_assignment
     end
     user_list
+  end
+
+  def required_velocity
+    sum = 0
+    stories.where(epic_id: epics.where.not(sprint_number: nil).pluck(:id)).pluck(:estimate).compact.each { |a| sum+=a }
+    weeks_in_project = ((end_date - start_date).to_f / 7).ceil
+    sprints_in_projects = (weeks_in_project.to_f / sprint_length).ceil
+    sum == 0 ? 0 : (sum.to_f / sprints_in_projects).ceil
+  end
+
+  def roadmap_sprints
+    sprints = []
+    count = 1
+    date = start_date
+    while date < end_date
+      sprint = {}
+      sprint['id'] = count
+      sprint['start_date'] = date
+      sprint_end_date = date + sprint_length.weeks
+      if sprint_end_date > end_date
+        sprint_end_date = end_date
+      end
+      sprint['end_date'] = sprint_end_date
+      sprint_epics = epics.where(sprint_number: count)
+      sprint['epics'] = sprint_epics.map {|epic| epic.for_roadmap }
+      estimate = 0
+      sprint_epics.each { |epic| estimate += epic.estimate }
+      sprint['estimate'] = estimate
+      sprints.push(sprint)
+      count = count + 1
+      date = sprint_end_date
+    end
+    sprints
   end
 
   private

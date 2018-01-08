@@ -136,6 +136,17 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def roadmap
+    user_session = Session.find_by(session_key: request.headers['SessionKey'])
+    user = user_session.user
+    if user_session.is_active? && user.is_on_project?(params[:id])
+      user_session.refresh
+      render :json => Project.find(params[:id]).for_roadmap
+    else
+      render :json => {error: 'Invalid Session'}
+    end
+  end
+
   private
 
     def project_params

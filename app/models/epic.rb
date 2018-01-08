@@ -15,11 +15,21 @@ class Epic < ApplicationRecord
     { id: id, name: name, priority: Priority.find_priority(priority), stories: stories.map{|story| story.for_backlog}, progress: story_progress}
   end
 
+  def for_roadmap
+    { id: id, name: name}
+  end
+
   def story_progress
     progress = []
     project.status.order(:order).each do |status|
       progress.push({status_name: status.name, count: status.stories.where(epic_id: id).count})
     end
     progress
+  end
+
+  def estimate
+    sum = 0
+    stories.pluck(:estimate).compact.each { |a| sum+=a }
+    sum
   end
 end
