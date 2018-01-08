@@ -26,4 +26,10 @@ class Epic < ApplicationRecord
     end
     progress
   end
+
+  def estimate
+    sum = 0
+    stories.pluck(:estimate).compact.each { |a| sum+=a }
+    sum
+  end
 end

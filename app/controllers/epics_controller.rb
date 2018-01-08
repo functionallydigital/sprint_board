@@ -61,7 +61,7 @@ class EpicsController < ApplicationController
     if user_session.is_active? && user.is_on_project?(epic.project_id)
       user_session.refresh
       if epic.update(sprint_number: params['sprintNumber'])
-        render :json => {success: true}
+        render :json => {estimate: epic.estimate, average_velocity: epic.project.required_velocity}
       else
         render :json => {error: 'Update Failed'}
       end

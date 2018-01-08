@@ -90,7 +90,7 @@ class Project < ApplicationRecord
 
   def required_velocity
     sum = 0
-    stories.pluck(:estimate).compact.each { |a| sum+=a }
+    stories.where(epic_id: epics.where.not(sprint_number: nil).pluck(:id)).pluck(:estimate).compact.each { |a| sum+=a }
     weeks_in_project = ((end_date - start_date).to_f / 7).ceil
     sprints_in_projects = (weeks_in_project.to_f / sprint_length).ceil
     sum == 0 ? 0 : (sum.to_f / sprints_in_projects).ceil
@@ -109,7 +109,11 @@ class Project < ApplicationRecord
         sprint_end_date = end_date
       end
       sprint['end_date'] = sprint_end_date
-      sprint['epics'] = epics.where(sprint_number: count).map {|epic| epic.for_roadmap }
+      sprint_epics = epics.where(sprint_number: count)
+      sprint['epics'] = sprint_epics.map {|epic| epic.for_roadmap }
+      estimate = 0
+      sprint_epics.each { |epic| estimate += epic.estimate }
+      sprint['estimate'] = estimate
       sprints.push(sprint)
       count = count + 1
       date = sprint_end_date
