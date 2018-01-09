@@ -2,6 +2,7 @@ class Story < ApplicationRecord
   belongs_to :epic
   belongs_to :user, optional: true
   belongs_to :status
+  belongs_to :sprint
   has_many :tasks
   delegate :project, to: :epic
 
@@ -24,6 +25,14 @@ class Story < ApplicationRecord
       estimate: estimate ? estimate : 0, 
       priority: priority ? priority : '', 
       acceptance_criteria: acceptance_criteria ? acceptance_criteria : ''}
+  end
+
+  def for_sprint_board
+    {
+      id: id, user:  user.nil? ? nil : user.for_backlog,
+      title: title, priority: Priority.find_priority(priority), estimate: estimate.nil? ? 0 : estimate,
+      description: description, acceptance_criteria: acceptance_criteria, tasks: tasks
+    }
   end
 
   def task_progress
