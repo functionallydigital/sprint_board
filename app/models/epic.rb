@@ -15,7 +15,7 @@ class Epic < ApplicationRecord
     { id: id, name: name, priority: Priority.find_priority(priority), stories: stories.map{|story| story.for_backlog}, progress: story_progress}
   end
 
-  def for_roadmap
+  def for_label
     { id: id, name: name}
   end
 
