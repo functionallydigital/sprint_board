@@ -107,9 +107,38 @@ class StoriesController < ApplicationController
       render :json => {error: 'Invalid Session'}
     end
   end
+
+  def update_position
+    user_session = Session.find_by(session_key: request.headers['SessionKey'])
+    user = user_session.user
+    story = Story.find(params[:id])
+    if user_session.is_active? && user.is_on_project?(story.project.id)
+      user_session.refresh
+      if adjust_story_list(story.project, params[:newPosition], story.position) && story.update(position: params[:newPosition])
+        render :json => story.project.for_backlog
+      else
+        render :json => {error: 'Update Failed'}
+      end
+    else
+      render :json => {error: 'Invalid Session'}
+    end
+  end
+
   private
 
     def story_params
       params.require(:story).permit(:id, :title, :description, :estimate, :priority, :acceptance_criteria, :epic_id)
+    end
+
+    def adjust_story_list(project, new_position, old_position)
+      if new_position > old_position
+        project.stories.where(position: old_position..new_position).each do |story|
+          story.update(position: (story.position - 1))
+        end
+      else
+        project.stories.where(position: new_position..old_position).each do |story|
+          story.update(position: (story.position + 1))
+        end
+      end
     end
 end

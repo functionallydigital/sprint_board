@@ -7,8 +7,9 @@ class Story < ApplicationRecord
   delegate :project, to: :epic
 
   def for_backlog
-    {id: id, epic_name: epic.name, epic_priority: epic.priority, user:  user.nil? ? nil : user.for_backlog, showDetails: false,
-      title: title, priority: Priority.find_label(priority), estimate: estimate, description: description, acceptance_criteria: acceptance_criteria, tasks: tasks}
+    {id: id, epic_name: epic.name, epic_priority: Priority.find_label(epic.priority), user:  user.nil? ? nil : user.for_backlog, showDetails: false,
+      title: title, priority: Priority.find_label(priority), estimate: estimate, description: description, position: position,
+      acceptance_criteria: acceptance_criteria, tasks: tasks}
   end
 
   def for_dashboard

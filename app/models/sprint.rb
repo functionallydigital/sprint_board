@@ -26,4 +26,9 @@ class Sprint < ApplicationRecord
     { id: id, start_date: start_date, end_date: end_date, points: points, active: is_active?, completion: completion,
       steps: project.status.order(:order), epics: epics.map{ |epic| epic.for_label }, stories: stories.map{ |story| story.for_sprint_board } }
   end
+
+  def for_backlog
+    { id: id, start_date: start_date, end_date: end_date, points: points,
+     stories: stories.where.not(status_id: project.final_sprint_step.id).order(:position).map{|story| story.for_backlog}}
+  end
 end

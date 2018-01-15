@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   post '/stories/:id/assign_user', to: 'stories#assign_user', as: 'add_story_user'
   post '/stories/:id/update_stage', to: 'stories#update_stage', as: 'update_story_stage'
+  post '/stories/:id/update_position', to: 'stories#update_position', as: 'update_story_position'
 
   post '/tasks/:id/assign_user', to: 'tasks#assign_user', as: 'add_tasks_user'
   post '/tasks/:id/update_stage', to: 'tasks#update_stage', as: 'update_task_stage'
