@@ -8,4 +8,8 @@ class Task < ApplicationRecord
   def for_overview
     {id: id, title: title, description: description, status: status, user: user.nil? ? nil : user.for_backlog}
   end
+
+  def for_sprint_board
+    {id: id, title: title, description: description, status: status, user: user.nil? ? nil : user.for_backlog, project_id: project.id, story_id: story.id}
+  end
 end
