@@ -17,6 +17,10 @@ Rails.application.routes.draw do
   put '/epics/:id/update_sprint_number', to: 'epics#update_sprint_number', as: 'update_epic_sprint_number'
 
   post '/stories/:id/assign_user', to: 'stories#assign_user', as: 'add_story_user'
+  post '/stories/:id/update_stage', to: 'stories#update_stage', as: 'update_story_stage'
+
+  post '/tasks/:id/assign_user', to: 'tasks#assign_user', as: 'add_tasks_user'
+  post '/tasks/:id/update_stage', to: 'tasks#update_stage', as: 'update_task_stage'
 
   get '/register', to: 'users#new', as: 'register'
   get '/users/selector_list', to: 'users#selector_list', as: 'user_selector_list'

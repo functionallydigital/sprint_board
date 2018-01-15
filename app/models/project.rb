@@ -60,6 +60,7 @@ class Project < ApplicationRecord
                         epics: epics.map{|epic| epic.for_overview},
                         users: projects_users.map{|user| user.for_dashboard} }
     if current_sprint
+      project_details[:sprint_id] = current_sprint.id
       project_details[:sprint_start] = current_sprint.start_date
       project_details[:sprint_end] = current_sprint.end_date
       project_details[:sprint_completion] = current_sprint.completion
@@ -77,7 +78,7 @@ class Project < ApplicationRecord
 
   def for_roadmap
     { id: id, name: name, start_date: start_date, end_date: end_date, sprint_length: sprint_length,
-      epics: epics.where(sprint_number: nil).map{|epic| epic.for_roadmap}, sprints: roadmap_sprints, required_velocity: required_velocity }
+      epics: epics.where(sprint_number: nil).map{|epic| epic.for_label}, sprints: roadmap_sprints, required_velocity: required_velocity }
   end
 
   def users_list
@@ -110,7 +111,7 @@ class Project < ApplicationRecord
       end
       sprint['end_date'] = sprint_end_date
       sprint_epics = epics.where(sprint_number: count)
-      sprint['epics'] = sprint_epics.map {|epic| epic.for_roadmap }
+      sprint['epics'] = sprint_epics.map {|epic| epic.for_label }
       estimate = 0
       sprint_epics.each { |epic| estimate += epic.estimate }
       sprint['estimate'] = estimate

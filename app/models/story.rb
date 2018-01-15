@@ -2,6 +2,7 @@ class Story < ApplicationRecord
   belongs_to :epic
   belongs_to :user, optional: true
   belongs_to :status
+  belongs_to :sprint, optional: true
   has_many :tasks
   delegate :project, to: :epic
 
@@ -12,9 +13,9 @@ class Story < ApplicationRecord
 
   def for_dashboard
     {
-      id: id, epic_name: epic.name, epic_priority: epic.priority, user:  user.nil? ? nil : user.for_backlog,
+      id: id, epic_name: epic.name, epic_priority: Priority.find_label(epic.priority), user:  user.nil? ? nil : user.for_backlog,
       title: title, priority: Priority.find_priority(priority), estimate: estimate.nil? ? 0 : estimate,
-      description: description, acceptance_criteria: acceptance_criteria, tasks: tasks, progress: task_progress
+      description: description, acceptance_criteria: acceptance_criteria, tasks: tasks.map{ |task| task.for_overview}, progress: task_progress_overview
     }
   end
 
@@ -26,7 +27,23 @@ class Story < ApplicationRecord
       acceptance_criteria: acceptance_criteria ? acceptance_criteria : ''}
   end
 
-  def task_progress
+  def for_sprint_board
+    {
+      id: id, user:  user.nil? ? nil : user.for_backlog, status_id: status_id, draggable: tasks.empty?, project_id: project.id,
+      title: title, priority: Priority.find_priority(priority), estimate: estimate.nil? ? 0 : estimate,
+      description: description, acceptance_criteria: acceptance_criteria, status: progress
+    }
+  end
+
+  def progress
+    steps = []
+    project.status.order(:order).each do |step|
+      steps.push({id: step.id, details: step, tasks: tasks.where(status_id: step.id).map{ |task| task.for_sprint_board } })
+    end
+    steps
+  end
+
+  def task_progress_overview
     progress = []
     project.status.order(:order).each do |status|
       progress.push({status_name: status.name, count: status.tasks.where(story_id: id).count})

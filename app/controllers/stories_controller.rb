@@ -81,8 +81,8 @@ class StoriesController < ApplicationController
     user = user_session.user
     story = Story.find(params[:id])
     if user_session.is_active? && user.is_on_project?(story.project.id)
+      user_session.refresh
       if story.update(user_id: params[:value])
-        user_session.refresh
         render :json => {success: true}
       else
         render :json => {error: 'Update Failed'}
@@ -92,9 +92,24 @@ class StoriesController < ApplicationController
     end
   end
 
+  def update_stage
+    user_session = Session.find_by(session_key: request.headers['SessionKey'])
+    user = user_session.user
+    story = Story.find(params[:id])
+    if user_session.is_active? && user.is_on_project?(story.project.id)
+      user_session.refresh
+      if story.update(status_id: params[:newStep])
+        render :json => {completion: story.sprint.completion}
+      else
+        render :json => {error: 'Update Failed'}
+      end
+    else
+      render :json => {error: 'Invalid Session'}
+    end
+  end
   private
 
     def story_params
-      params.require(:story).permit(:title, :description, :estimate, :priority, :acceptance_criteria, :epic_id)
+      params.require(:story).permit(:id, :title, :description, :estimate, :priority, :acceptance_criteria, :epic_id)
     end
 end
