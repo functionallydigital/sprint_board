@@ -83,7 +83,7 @@ class TasksController < ApplicationController
     if user_session.is_active? && user.is_on_project?(task.project.id)
       if task.update(status_id: params[:newStep]) && story.update(status_id: story_step)
         user_session.refresh
-        render :json => {story: story.for_sprint_board, completion: task.sprint.completion}
+        render :json => {story: story.for_sprint_board, completion: story.sprint.completion}
       else
         render :json => {error: 'Update Failed'}
       end

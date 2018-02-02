@@ -78,7 +78,7 @@ class Project < ApplicationRecord
 
   def for_backlog
     { id: id, name: name, stories:  stories.where(sprint_id: nil).where.not(status_id: final_sprint_step.id).order(:position).map{|story| story.for_backlog},
-      sprints: sprints.where.not(end_date: Time.at(0)..(1.days.ago)).map{|sprint| sprint.for_backlog}, new_sprint: Sprint.new }
+      sprints: sprints.where.not(end_date: Time.at(0)..(1.days.ago)).map{|sprint| sprint.for_backlog} }
   end
 
   def for_roadmap
