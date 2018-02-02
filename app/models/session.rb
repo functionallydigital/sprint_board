@@ -6,7 +6,7 @@ class Session < ApplicationRecord
   end
 
   def is_active?
-    Time.now < (last_action + 1.day)
+    id && created_at
   end
 
   def refresh

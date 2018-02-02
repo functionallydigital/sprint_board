@@ -107,9 +107,54 @@ class StoriesController < ApplicationController
       render :json => {error: 'Invalid Session'}
     end
   end
+
+  def update_position
+    user_session = Session.find_by(session_key: request.headers['SessionKey'])
+    user = user_session.user
+    story = Story.find(params[:id])
+    if user_session.is_active? && user.is_on_project?(story.project.id)
+      user_session.refresh
+      if adjust_story_list(story.project, params[:newPosition], story)
+        render :json => story.project.for_backlog
+      else
+        render :json => {error: 'Update Failed'}
+      end
+    else
+      render :json => {error: 'Invalid Session'}
+    end
+  end
+
   private
 
     def story_params
       params.require(:story).permit(:id, :title, :description, :estimate, :priority, :acceptance_criteria, :epic_id)
+    end
+
+    def adjust_story_list(project, new_position, moved_story)
+      old_position = moved_story.position
+      if new_position > old_position #moving down the list
+        project.stories.where(position: old_position..new_position).each do |story|
+          story.update(position: (story.position - 1))
+        end
+        moved_story.update(position: new_position)
+        #clear stories from sprint of moved story, and all later sprints, and reassign stories to the sprint.
+        if !moved_story.sprint_id.nil?
+          original_sprint = moved_story.sprint_id
+          project.stories.where(sprint_id: original_sprint..Float::INFINITY).update_all(sprint_id: nil)
+          project.sprints.where(id: original_sprint..Float::INFINITY).map{|sprint| sprint.set_stories}
+        end
+      else #moving up the list
+        replaced_story = project.stories.find_by_position(new_position)
+        project.stories.where(position: new_position..old_position).each do |story|
+          story.update(position: (story.position + 1))
+        end
+        moved_story.update(position: new_position)
+        #clear stories from sprint of story currently at new_position, and all later sprints, and reassign stories to the sprint.
+        if replaced_story && !replaced_story.sprint_id.nil?
+          original_sprint = replaced_story.sprint_id
+          project.stories.where(sprint_id: original_sprint..Float::INFINITY).update_all(sprint_id: nil)
+          project.sprints.where(id: original_sprint..Float::INFINITY).map{|sprint| sprint.set_stories}
+        end
+      end
     end
 end
